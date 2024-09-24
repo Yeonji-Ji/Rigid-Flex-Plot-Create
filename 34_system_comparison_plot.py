@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 
-save_path = "/Users/yeonji/Dropbox/myfolder_data/gist_integration_data_figs/Data_and_Figures/Figures_revised/34_comparison_10A/"
+save_path = ""
 reg = "cav"
 fig_name = "V" + reg + "_number_of_water.png"
 prop1 = "water"
@@ -14,7 +14,7 @@ n1, n2 = 25, 320
 cap_loc = "upper left"
 
 
-data_path = "/Users/yeonji/Dropbox/myfolder_data/gist_integration_data_figs/Data_and_Figures/Data/Vcav_10_34sys.csv"
+data_path = ""
 df = pd.read_csv(data_path)
 
 system_list = []
