@@ -20,22 +20,29 @@ def generate_plot(ahr_data, ahr_err, bbr_data, bbr_err, filename, ylim=None, lin
     cap = 6
     eline = 1
     lw = 1
-    ashape, bshape = 'o', 'D'
+    alpha_n = 1.0
+    ashape, bshape = 'o', 'd'
+    amarkerst, bmarkerst = 'none', 'full'
     acolor, bcolor = '#eb7005', '#1f77b4'
 
+    ahr_marker_style = dict(lw=lw, elinewidth=eline, capsize=cap, alpha=alpha_n,
+                            label="ahr", marker=ashape, fillstyle=amarkerst, color=acolor)
+    bbr_marker_style = dict(lw=lw, elinewidth=eline, capsize=cap, alpha=alpha_n,
+                            label="bbr", marker=bshape, fillstyle=bmarkerst, color=bcolor)
 
-    axs[0][0].errorbar(vol_range, ahr_data[0], yerr=ahr_err[0], lw=lw, elinewidth=eline, capsize=cap, label="ahr", marker=ashape, color=acolor)
-    axs[0][0].errorbar(vol_range, bbr_data[0], yerr=bbr_err[0], lw=lw, elinewidth=eline, capsize=cap, label="bbr", marker=bshape, color=bcolor)
-    axs[0][1].errorbar(vol_range, ahr_data[1], yerr=ahr_err[1], lw=lw, elinewidth=eline, capsize=cap, label="ahr", marker=ashape, color=acolor)
-    axs[0][1].errorbar(vol_range, bbr_data[1], yerr=bbr_err[1], lw=lw, elinewidth=eline, capsize=cap, label="bbr", marker=bshape, color=bcolor)
-    axs[0][2].errorbar(vol_range, ahr_data[2], yerr=ahr_err[2], lw=lw, elinewidth=eline, capsize=cap, label="ahr", marker=ashape, color=acolor)
-    axs[0][2].errorbar(vol_range, bbr_data[2], yerr=bbr_err[2], lw=lw, elinewidth=eline, capsize=cap, label="bbr", marker=bshape, color=bcolor)
-    axs[1][0].errorbar(vol_range, ahr_data[3], yerr=ahr_err[3], lw=lw, elinewidth=eline, capsize=cap, label="ahr", marker=ashape, color=acolor)
-    axs[1][0].errorbar(vol_range, bbr_data[3], yerr=bbr_err[3], lw=lw, elinewidth=eline, capsize=cap, label="bbr", marker=bshape, color=bcolor)
-    axs[1][1].errorbar(vol_range, ahr_data[4], yerr=ahr_err[4], lw=lw, elinewidth=eline, capsize=cap, label="ahr", marker=ashape, color=acolor)
-    axs[1][1].errorbar(vol_range, bbr_data[4], yerr=bbr_err[4], lw=lw, elinewidth=eline, capsize=cap, label="bbr", marker=bshape, color=bcolor)
-    axs[1][2].errorbar(vol_range, ahr_data[5], yerr=ahr_err[5], lw=lw, elinewidth=eline, capsize=cap, label="ahr", marker=ashape, color=acolor)
-    axs[1][2].errorbar(vol_range, bbr_data[5], yerr=bbr_err[5], lw=lw, elinewidth=eline, capsize=cap, label="bbr", marker=bshape, color=bcolor)
+
+    axs[0][0].errorbar(vol_range, ahr_data[0], yerr=ahr_err[0], **ahr_marker_style)
+    axs[0][0].errorbar(vol_range, bbr_data[0], yerr=bbr_err[0], **bbr_marker_style)
+    axs[0][1].errorbar(vol_range, ahr_data[1], yerr=ahr_err[1], **ahr_marker_style)
+    axs[0][1].errorbar(vol_range, bbr_data[1], yerr=bbr_err[1], **bbr_marker_style)
+    axs[0][2].errorbar(vol_range, ahr_data[2], yerr=ahr_err[2], **ahr_marker_style)
+    axs[0][2].errorbar(vol_range, bbr_data[2], yerr=bbr_err[2], **bbr_marker_style)
+    axs[1][0].errorbar(vol_range, ahr_data[3], yerr=ahr_err[3], **ahr_marker_style)
+    axs[1][0].errorbar(vol_range, bbr_data[3], yerr=bbr_err[3], **bbr_marker_style)
+    axs[1][1].errorbar(vol_range, ahr_data[4], yerr=ahr_err[4], **ahr_marker_style)
+    axs[1][1].errorbar(vol_range, bbr_data[4], yerr=bbr_err[4], **bbr_marker_style)
+    axs[1][2].errorbar(vol_range, ahr_data[5], yerr=ahr_err[5], **ahr_marker_style)
+    axs[1][2].errorbar(vol_range, bbr_data[5], yerr=bbr_err[5], **bbr_marker_style)
 
     axs[0][0].axhline(y=line, color="gray", linestyle="--", label="bulk") # Bulk E
 
@@ -50,12 +57,12 @@ def generate_plot(ahr_data, ahr_err, bbr_data, bbr_err, filename, ylim=None, lin
                 axs[row][col].set_ylabel("kcal/mol", fontsize=10.5, fontfamily='serif', style='italic')
 
 
-    axs[0][0].set_title("Energy per water ($E_{tot}$ / water)", fontsize=12.5, fontfamily='serif')
+    axs[0][0].set_title("Energy per water (E / water)", fontsize=12.5, fontfamily='serif')
     axs[0][1].set_title("Entropy per water (\N{MINUS SIGN}T\u0394S / water)", fontsize=12.5, fontfamily='serif')
-    axs[0][2].set_title("Free Energy per water ( $A_{tot}$ / water)", fontsize=12.5, fontfamily='serif')
+    axs[0][2].set_title("Free Energy per water (A / water)", fontsize=12.5, fontfamily='serif')
     axs[1][0].set_title("Total Energy ($E_{tot}$)", fontsize=12.5, fontfamily='serif')
     axs[1][1].set_title("Total Entropy (\N{MINUS SIGN}T\u0394$S_{tot}$)", fontsize=12.5, fontfamily='serif')
-    axs[1][2].set_title("Total Helmholtz Free Energy ($E_{tot}$)", fontsize=12.5, fontfamily='serif')
+    axs[1][2].set_title("Total Helmholtz Free Energy ($A_{tot}$)", fontsize=12.5, fontfamily='serif')
 
 
     legend_elements = [
@@ -63,10 +70,7 @@ def generate_plot(ahr_data, ahr_err, bbr_data, bbr_err, filename, ylim=None, lin
         plt.Line2D([0], [0], color='#1f77b4', lw=2, label='Flexible'),
         # plt.Line2D([0], [0], color="#ba0615", lw=2, label="bulk")
     ]
-    # fig.legend(handles=legend_elements, loc='center right', bbox_to_anchor=(1, 0.55), ncol=1, fontsize=11)
-    # fig.legend(handles=legend_elements, loc='upper right', bbox_to_anchor=(0.985, 1.01), ncol=2, fontsize=10)
-    # for a in axs[0, :]:
-    #     a.tick_params(labelbottom=True)
+
 
     plt.tight_layout()
     fig.savefig(path_to_save + ".png", dpi=300)
@@ -75,8 +79,8 @@ def generate_plot(ahr_data, ahr_err, bbr_data, bbr_err, filename, ylim=None, lin
     return
 
 
-avg_csv_file = "/Users/yeonji/Dropbox/myfolder_data/gist_integration_data_figs/Data_and_Figures/Data/avg_by_reg.csv"
-std_csv_file = "/Users/yeonji/Dropbox/myfolder_data/gist_integration_data_figs/Data_and_Figures/Data/avg_by_reg_std_err.csv"
+avg_csv_file = ""
+std_csv_file = ""
 df = pd.read_csv(avg_csv_file, index_col="Unnamed: 0")
 err = pd.read_csv(std_csv_file, index_col="Unnamed: 0")
 
@@ -106,4 +110,4 @@ ahr_err[5], bbr_err[5] = err.loc[:, "dA (ahr)"].tolist(), err.loc[:, "dA (bbr)"]
 # print(ahr_data[1])
 # print(ahr_err)
 
-generate_plot(ahr_data, ahr_err, bbr_data, bbr_err, "avg_six", line=-12.259)
+generate_plot(ahr_data, ahr_err, bbr_data, bbr_err, "avg_six_edit", line=-12.259)
