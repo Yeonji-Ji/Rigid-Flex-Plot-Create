@@ -1,20 +1,20 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 
-save_path = ""
-reg = "cav"
-fig_name = "V" + reg + "_number_of_water.png"
-prop1 = "water"
-# prop2 = "Nww/water"
-
-y_label = 'Number of water molecules ('r'$V_{' + reg + '}$'')'
-
-diff_label_dist = 5
-n1, n2 = 25, 320
-cap_loc = "upper left"
+save_path = ""                                  # path to save figures
+reg = "cav"                                     # disp (3A) or cav (10A)
+fig_name = "V" + reg + "_A_total_marker.png"    #figure name
+prop1 = "dA"                                    # data to show
 
 
-data_path = ""
+y_label = 'Total Solvent Free Energy ($A_{tot}$' +', '+ ''r'$V_{' + reg + '}$'')'   # title of the figure
+
+diff_label_dist = 7         # distance between label and the top data
+n1, n2 = 25, 250            # y_lim
+cap_loc = "upper right"     # loc of leg
+
+
+data_path = ""  # data file
 df = pd.read_csv(data_path)
 
 system_list = []
@@ -34,26 +34,38 @@ for idx in Ediff_sort_idx:
         Ediff.append(round(df.loc[idx, prop1+" diff (ahr - bbr)"], 2))
         # Ediff.append(round((df.loc[idx, prop1+" (ahr)"] + df.loc[idx, prop2+" (ahr)"]) - (df.loc[idx, prop1+" (bbr)"] + df.loc[idx, prop2+" (bbr)"]), 2))
 
+# marker information
+ashape, bshape = 'o', 'd'
+amarkerst, bmarkerst = 'none', 'full'
+acolor, bcolor = '#eb7005', '#1f77b4'
+ahr_marker_style = dict(marker=ashape, linewidth=2.0, s=100, facecolors=amarkerst, edgecolors=acolor)
+bbr_marker_style = dict(marker=bshape, linewidth=0.5, s=100, facecolors=bcolor, edgecolors=bcolor)
+
+# Rigid-Flexible data difference label style
+red_style = dict(ha='center', color='red', fontsize=11, weight='bold', rotation=45)
+green_style = dict(ha='center', color='green', fontsize=11, weight='bold', rotation=45)
+
 # Creating the plot
 fig, ax1 = plt.subplots(figsize=(18, 6))
 
 # Scatter points for A and B, with the x-axis for systems and y-axis for values
-ax1.scatter(system_list, Eahr, color='#EB7016', label='Rigid', s=100, marker='o', zorder=3)
-ax1.scatter(system_list, Ebbr, color='#2077B4', label='Flexible', s=100, marker='D', zorder=2)
+ax1.scatter(system_list, Eahr, label='Rigid', zorder=3, **ahr_marker_style)
+ax1.scatter(system_list, Ebbr, label='Flexible', zorder=2, **bbr_marker_style)
 
 # ax1.axhline(y=-12.259, color="gray", linestyle="--", label="Bulk")
 
 
+
 # Adding connecting lines for each system
 for i, sys in enumerate(system_list):
-    ax1.plot([system_list[i], system_list[i]], [Ebbr[i], Eahr[i]], 'black', linewidth=1, zorder=1)
+    ax1.plot([system_list[i], system_list[i]], [Ebbr[i], Eahr[i]], 'black', linewidth=0.5, zorder=1)
     mid_point = (Eahr[i] + Ebbr[i]) / 2
 
     Ediff[i] = "{:.2f}".format(abs(Ediff[i]))
     if Eahr[i] >= Ebbr[i]:
-        ax1.text(system_list[i], Eahr[i] + diff_label_dist, Ediff[i], ha='center', color='red', fontsize=11, weight='bold', rotation=45)
+        ax1.text(system_list[i], Eahr[i] + diff_label_dist, Ediff[i], **red_style)
     elif Ebbr[i] >= Eahr[i]:
-        ax1.text(system_list[i], Ebbr[i] + diff_label_dist, Ediff[i], ha='center', color='green', fontsize=11, weight='bold', rotation=45)
+        ax1.text(system_list[i], Ebbr[i] + diff_label_dist, Ediff[i], **green_style)
 
 
 # Labeling and styling
